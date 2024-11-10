@@ -1,41 +1,84 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from "react";
-import { Button, StyleSheet, View, Text, TextInput } from "react-native";
+import { StyleSheet, View, Text, FlatList, Button, Alert } from "react-native";
+import GoalInput from "./components/GoalInput";
+import GoalItem from "./components/GoalItem";
 
 export default function App() {
-  const [goalInput, setGoalInput] = useState("");
+  const [isModal, setIsModal] = useState(false);
   const [listGoal, setListGoal] = useState([]);
 
-  function goalInputHandler(enteredText) {
-    // console.log(enteredText);
-    setGoalInput(enteredText);
+  function closeModalHandler() {
+    setIsModal(false);
   }
 
-  function addGoalHandler() {
-    // console.log(goalInput);
-    setListGoal((goal) => [goalInput, ...goal]);
+  function addGoalHandler(goalInput) {
+    if (goalInput === "") {
+      Alert.alert("Ooops!!", "The input goal cannot be empty", "OK");
+    } else {
+      setListGoal((goals) => [
+        { text: goalInput, id: Math.random().toString() },
+        ...goals,
+      ]);
 
-    setGoalInput("");
+      // setGoalInput("");
+      closeModalHandler();
+    }
+  }
+
+  function handleDeleteItem(id) {
+    // console.log("delete item");
+    setListGoal((goals) => {
+      return goals.filter((item) => item.id !== id);
+    });
+  }
+
+  function handleModal() {
+    setIsModal(true);
   }
 
   return (
     <>
+      <StatusBar style="light" />
       <View style={styles.appContainer}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Your course goal"
-            onChangeText={goalInputHandler}
-            value={goalInput}
-          />
-          <Button title="add Goals" onPress={addGoalHandler} />
-        </View>
+        <Button title="Add New Godal" color="#a065ec" onPress={handleModal} />
+        <GoalInput
+          onAddGoal={addGoalHandler}
+          showModal={isModal}
+          onModal={closeModalHandler}
+        />
+
         <View style={styles.goalScoreContainer}>
-          <Text>List of goals......</Text>
-          {listGoal.length < 1 && <Text>No item in the list</Text>}
-          {listGoal.map((item) => {
-            return <Text style={styles.listItem}>{item}</Text>;
-          })}
+          {/* <ScrollView alwaysBounceVertical={false}>
+            {listGoal.length < 1 && <Text>No item in the list</Text>}
+            {listGoal.map((item) => {
+              return (
+                // we wil have to style or apply border in the outer view as shown below so that it can also apply in ios device
+                <View key={item} style={styles.listItem}>
+                  <Text style={styles.listItemText}>{item}</Text>
+                </View>
+              );
+            })}
+          </ScrollView> */}
+          {listGoal.length < 1 && (
+            <Text style={styles.textItem}>No item in the list</Text>
+          )}
+          <FlatList
+            alwaysBounceVertical={false}
+            data={listGoal}
+            keyExtractor={(item, index) => {
+              return item.id;
+            }}
+            renderItem={(itemData) => {
+              return (
+                <GoalItem
+                  listItem={itemData.item.text}
+                  id={itemData.item.id}
+                  onDelete={handleDeleteItem}
+                />
+              );
+            }}
+          />
         </View>
       </View>
     </>
@@ -47,36 +90,16 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingHorizontal: 16,
     flex: 1,
+    // backgroundColor: "#1e085a",
   },
-  inputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-    flex: 1,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: "#cccccc",
-    width: "70%",
-    marginRight: 4,
-    padding: 8,
-  },
-
   goalScoreContainer: {
     flex: 6,
   },
-  listItem: {
-    borderRadius: 6,
-    paddingTop: 6,
-    paddingHorizontal: 10,
-    margin: 5,
-    backgroundColor: "#5e0acc",
-    height: 30,
+  textItem: {
     color: "#fff",
-    elevation: 3,
+    marginTop: 15,
+    justifyContent: "center",
+    alignSelf: "center",
   },
 });
 
@@ -90,3 +113,13 @@ const styles = StyleSheet.create({
 //: NOTE
 // - Every view in react native uses a flexbox by default.
 // - by default it organizes the child component from top to bottom (column)
+
+// flatlist is good at rendering very long list
+// unlike scrollview flatlist only render visible items.
+
+
+// NOTE:
+
+// with flatlist... when using and object with key property.. flatlist will automatically render that key or use that key to avoid throwing an error to do with unique key prop when rendering list item
+// i.e {text: listItem, key: .fjljfldjfdjfld}
+// if your object uses different key name.. your can use keyExtractor which return item, index...
