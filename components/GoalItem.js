@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
 
 const GoalItem = ({ listItem, onDelete, id }) => {
+
   return (
     // instead of passing an id as shown below we can also use bind method onDelete.bind(this, id)
 
