@@ -1,15 +1,48 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
 import { useState } from "react";
+import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 
 const StartGameScreen = () => {
+  const [enteredNumber, setEnteredNumber] = useState("");
+
+  function handleInputNumber(inputNumber) {
+    setEnteredNumber(inputNumber);
+  }
+
+  function handleConfirmNumber() {
+    const choosenNumber = parseInt(enteredNumber);
+    if (isNaN(choosenNumber) || choosenNumber <= 0 || choosenNumber > 99) {
+      // an alert method has parameter with 1st one being the title, the second one being the msg then third one being button to use and the a function that will be called once the alert button has being clicked
+      Alert.alert(
+        "Incorrect number",
+        "Number must be a number between 1 and 99",
+        [{ text: "Okay", style: "cancel" }]
+      );
+      return;
+    }
+  }
+
   return (
     <>
       <View style={styles.inputContainer}>
-        <TextInput style={styles.numberInputContainer} maxLength={2} />
+        {/* you can also use maxLength="" string value bcoz js will automatically try to understand your code */}
+
+        <TextInput
+          style={styles.numberInputContainer}
+          maxLength={2}
+          keyboardType="number-pad"
+          onChangeText={handleInputNumber}
+          value={enteredNumber}
+        />
         {/* buttons */}
-        <PrimaryButton>Reset</PrimaryButton>
-        <PrimaryButton>Confirm</PrimaryButton>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton>Reset</PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={handleConfirmNumber}>Confirm</PrimaryButton>
+          </View>
+        </View>
       </View>
     </>
   );
@@ -24,7 +57,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     borderRadius: 8,
     padding: 16,
-    backgroundColor: "#72063c",
+    backgroundColor: "#3b021f",
     // below is a way to add shadow in android app
     elevation: 4,
     // below is a way to add shadow in ios app.
@@ -34,6 +67,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
     shadowOpacity: 0.5,
+    justifyContent: "center",
+    alignItems: "center",
   },
   numberInputContainer: {
     height: 50,
@@ -45,5 +80,11 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+  },
+  buttonContainer: {
+    flex: 1,
   },
 });
