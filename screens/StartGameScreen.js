@@ -2,8 +2,14 @@ import { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 
-const StartGameScreen = () => {
+import Colors from "../constants/colors";
+
+const StartGameScreen = ({ onPickedNumber }) => {
   const [enteredNumber, setEnteredNumber] = useState("");
+
+  function handleResetButton() {
+    setEnteredNumber("");
+  }
 
   function handleInputNumber(inputNumber) {
     setEnteredNumber(inputNumber);
@@ -16,10 +22,11 @@ const StartGameScreen = () => {
       Alert.alert(
         "Incorrect number",
         "Number must be a number between 1 and 99",
-        [{ text: "Okay", style: "cancel" }]
+        [{ text: "Okay", style: "destructive", onPress: handleResetButton }]
       );
       return;
     }
+    onPickedNumber(choosenNumber);
   }
 
   return (
@@ -37,7 +44,7 @@ const StartGameScreen = () => {
         {/* buttons */}
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
-            <PrimaryButton>Reset</PrimaryButton>
+            <PrimaryButton onPress={handleResetButton}>Reset</PrimaryButton>
           </View>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={handleConfirmNumber}>Confirm</PrimaryButton>
@@ -57,7 +64,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     borderRadius: 8,
     padding: 16,
-    backgroundColor: "#3b021f",
+    backgroundColor: Colors.primary800,
     // below is a way to add shadow in android app
     elevation: 4,
     // below is a way to add shadow in ios app.
@@ -74,9 +81,9 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     fontSize: 32,
-    borderBottomColor: "#ddb52f",
+    borderBottomColor: Colors.secondary100,
     borderBottomWidth: 2,
-    color: "#ddb52f",
+    color: Colors.secondary100,
     marginVertical: 8,
     fontWeight: "bold",
     textAlign: "center",
