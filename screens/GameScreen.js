@@ -27,15 +27,16 @@ const GameScreen = ({ userNumber }) => {
   );
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
 
-  console.log(initialGuess);
+
 
   function nextGuessRound(direction) {
     if (direction === "lower") {
       // we will set maxBoundary to the current guess to avoid the comp from guessing even a higher value
       maxBoundary = currentGuess;
     } else {
-      minBoundary + 1;
+      minBoundary = currentGuess + 1;
     }
+    console.log(minBoundary, maxBoundary);
     const newRound = generateRandomBetween(
       minBoundary,
       maxBoundary,
