@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
 import {
   StyleSheet,
   Text,
@@ -18,6 +19,12 @@ import GameOverScreen from "./screens/GameOverScreen";
 export default function App() {
   const [userNumber, setUserNumber] = useState();
   const [gameIsOver, setGameIsOver] = useState(true);
+
+  // using the custome fonts
+  useFonts({
+    "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+    "use-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+  });
 
   function handlePickedNumber(pickedNumber) {
     setUserNumber(pickedNumber);
