@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Suspense, startTransition } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
+// import AppLoading from "expo-app-loading";
+import * as SplashScreen from "expo-splash-screen";
 import {
   StyleSheet,
   Text,
@@ -16,15 +19,24 @@ import GameScreen from "./screens/GameScreen";
 import Colors from "./constants/colors";
 import GameOverScreen from "./screens/GameOverScreen";
 
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
   const [userNumber, setUserNumber] = useState();
   const [gameIsOver, setGameIsOver] = useState(true);
 
   // using the custome fonts
-  useFonts({
+  // return an of bolean that shows whether the icons hve loaded or not
+  const [fontsLoaded] = useFonts({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
-    "use-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+    "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
   function handlePickedNumber(pickedNumber) {
     setUserNumber(pickedNumber);
@@ -45,6 +57,10 @@ export default function App() {
 
   if (gameIsOver && userNumber) {
     screen = <GameOverScreen />;
+  }
+
+  if (!fontsLoaded) {
+    return null;
   }
   return (
     <LinearGradient

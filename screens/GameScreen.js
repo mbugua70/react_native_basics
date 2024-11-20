@@ -110,6 +110,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   marginTopAdditional: {
-    marginBottom: 8,
+    marginBottom: 12,
   },
 });
