@@ -20,8 +20,8 @@ function generateRandomBetween(min, max, exclude) {
 }
 
 // the variable declared below is due to, avoid them from being changed when the component render or rerender again.
-let minBoundary = 1;
-let maxBoundary = 100;
+// let minBoundary = 1;
+// let maxBoundary = 100;
 
 const GameScreen = ({ userNumber, onGameIsOver }) => {
   const initialGuess = generateRandomBetween(
@@ -32,6 +32,9 @@ const GameScreen = ({ userNumber, onGameIsOver }) => {
     userNumber
   );
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+  let minBoundary = 1;
+  let maxBoundary = 100;
 
   // useEffect used to check if game is over.
 

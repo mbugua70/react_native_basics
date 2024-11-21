@@ -24,6 +24,7 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [userNumber, setUserNumber] = useState();
   const [gameIsOver, setGameIsOver] = useState(true);
+  const [guessRound, setGuessRound] = useState(0);
 
   // using the custome fonts
   // return an of bolean that shows whether the icons hve loaded or not
@@ -47,6 +48,12 @@ export default function App() {
     setGameIsOver(true);
   }
 
+  function handleStartGame() {
+    setGuessRound(0);
+    setGameIsOver(true);
+    setUserNumber(null);
+  }
+
   let screen = <StartGameScreen onPickedNumber={handlePickedNumber} />;
 
   if (userNumber) {
@@ -56,7 +63,13 @@ export default function App() {
   }
 
   if (gameIsOver && userNumber) {
-    screen = <GameOverScreen />;
+    screen = (
+      <GameOverScreen
+        userNumber={userNumber}
+        roundNumber={guessRound}
+        onRestart={handleStartGame}
+      />
+    );
   }
 
   if (!fontsLoaded) {
