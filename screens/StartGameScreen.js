@@ -1,5 +1,15 @@
 import { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Alert,
+  Dimensions,
+  useWindowDimensions,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 
 import Colors from "../constants/colors";
@@ -9,6 +19,7 @@ import InstructionText from "../components/ui/InstructionText";
 
 const StartGameScreen = ({ onPickedNumber }) => {
   const [enteredNumber, setEnteredNumber] = useState("");
+  const { width, height } = useWindowDimensions();
 
   function handleResetButton() {
     setEnteredNumber("");
@@ -32,45 +43,60 @@ const StartGameScreen = ({ onPickedNumber }) => {
     onPickedNumber(choosenNumber);
   }
 
+  const marginTopDistance = height < 380 ? 30 : 100;
+
   return (
     <>
-      <View style={styles.rootContainer}>
-        <Title>Guess My Number</Title>
-        {/* <View style={styles.inputContainer}>
+      <ScrollView style={styles.screen}>
+        <KeyboardAvoidingView style={styles.screen} behavior="position">
+          <View
+            style={[styles.rootContainer, { marginTop: marginTopDistance }]}
+          >
+            <Title>Guess My Number</Title>
+            {/* <View style={styles.inputContainer}>
 
         </View> */}
-        <Card>
-          {/* you can also use maxLength="" string value bcoz js will automatically try to understand your code */}
-          <InstructionText>Enter a Number</InstructionText>
-          <TextInput
-            style={styles.numberInputContainer}
-            maxLength={2}
-            keyboardType="number-pad"
-            onChangeText={handleInputNumber}
-            value={enteredNumber}
-          />
-          {/* buttons */}
-          <View style={styles.buttonsContainer}>
-            <View style={styles.buttonContainer}>
-              <PrimaryButton onPress={handleResetButton}>Reset</PrimaryButton>
-            </View>
-            <View style={styles.buttonContainer}>
-              <PrimaryButton onPress={handleConfirmNumber}>
-                Confirm
-              </PrimaryButton>
-            </View>
+            <Card>
+              {/* you can also use maxLength="" string value bcoz js will automatically try to understand your code */}
+              <InstructionText>Enter a Number</InstructionText>
+              <TextInput
+                style={styles.numberInputContainer}
+                maxLength={2}
+                keyboardType="number-pad"
+                onChangeText={handleInputNumber}
+                value={enteredNumber}
+              />
+              {/* buttons */}
+              <View style={styles.buttonsContainer}>
+                <View style={styles.buttonContainer}>
+                  <PrimaryButton onPress={handleResetButton}>
+                    Reset
+                  </PrimaryButton>
+                </View>
+                <View style={styles.buttonContainer}>
+                  <PrimaryButton onPress={handleConfirmNumber}>
+                    Confirm
+                  </PrimaryButton>
+                </View>
+              </View>
+            </Card>
           </View>
-        </Card>
-      </View>
+        </KeyboardAvoidingView>
+      </ScrollView>
     </>
   );
 };
 
 export default StartGameScreen;
 
+// const deviceHeight = Dimensions.get("window").height;
+
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   rootContainer: {
-    marginTop: 90,
+    // marginTop: deviceHeight < 380 ? 30 : 90,
     flex: 1,
     alignItems: "center",
   },
@@ -93,3 +119,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+
+// NOTE::
+
+// the code outside the comp function won't exercute again, since it's only exercutec once.

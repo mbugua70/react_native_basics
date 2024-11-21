@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { setTokenSourceMapRange } from "typescript";
 import Title from "../components/ui/title";
@@ -8,6 +8,7 @@ import PrimaryButton from "../components/ui/PrimaryButton";
 import GameOverScreen from "./GameOverScreen";
 import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
+import GuessLogItem from "../components/game/GuessLogItem";
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -20,8 +21,8 @@ function generateRandomBetween(min, max, exclude) {
 }
 
 // the variable declared below is due to, avoid them from being changed when the component render or rerender again.
-// let minBoundary = 1;
-// let maxBoundary = 100;
+let minBoundary = 1;
+let maxBoundary = 100;
 
 const GameScreen = ({ userNumber, onGameIsOver }) => {
   const initialGuess = generateRandomBetween(
@@ -32,17 +33,22 @@ const GameScreen = ({ userNumber, onGameIsOver }) => {
     userNumber
   );
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
-
-  let minBoundary = 1;
-  let maxBoundary = 100;
+  const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
   // useEffect used to check if game is over.
 
+  const guessRoundListLength = guessRounds.length;
+
   useEffect(() => {
     if (currentGuess === userNumber) {
-      onGameIsOver();
+      onGameIsOver(guessRoundListLength);
     }
   }, [currentGuess, userNumber, onGameIsOver]);
+
+  useEffect(() => {
+    minBoundary = 1;
+    maxBoundary = 100;
+  }, []);
 
   function nextGuessRound(direction) {
     if (
@@ -67,6 +73,7 @@ const GameScreen = ({ userNumber, onGameIsOver }) => {
       currentGuess
     );
     setCurrentGuess(newRound);
+    setGuessRounds((prevGuessRound) => [newRound, ...prevGuessRound]);
   }
 
   return (
@@ -94,7 +101,33 @@ const GameScreen = ({ userNumber, onGameIsOver }) => {
       </Card>
 
       {/* </View> */}
-      <View></View>
+      <View style={styles.listContainer}>
+        {/* {guessRounds.map((guessRound) => (
+          <Text key={guessRound}>{guessRound}</Text>
+        ))} */}
+
+        {/* instead of using the mp function as shown above we can the the flatList component from react native. */}
+
+        <FlatList
+          // the data prop points to the array we want to output
+          data={guessRounds}
+          // by default when using flatList it will automatically use the keys found in your in object..
+          // but if you it cannot find the key in your object you will have to use the keyExtractor .
+
+          keyExtractor={(item) => item}
+          // keyExtractor={(item, index) => {
+          //   return item.id;
+          // }}
+
+          // renderItem used to render the item of an array
+          renderItem={(guessRounds) => (
+            <GuessLogItem
+              guess={guessRounds.item}
+              roundNumber={guessRoundListLength - guessRounds.index}
+            />
+          )}
+        />
+      </View>
     </View>
   );
 };
@@ -103,8 +136,11 @@ export default GameScreen;
 
 const styles = StyleSheet.create({
   screenContainer: {
+    alignItems: "center",
     flex: 1,
-    padding: 24,
+    paddingHorizontal: 26,
+    paddingTop: 24,
+    paddingBottom: 5,
   },
   buttonsContainer: {
     flexDirection: "row",
@@ -114,5 +150,10 @@ const styles = StyleSheet.create({
   },
   marginTopAdditional: {
     marginBottom: 12,
+  },
+
+  listContainer: {
+    flex: 1,
+    paddingTop: 16,
   },
 });

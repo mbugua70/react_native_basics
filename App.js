@@ -24,7 +24,7 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [userNumber, setUserNumber] = useState();
   const [gameIsOver, setGameIsOver] = useState(true);
-  const [guessRound, setGuessRound] = useState(0);
+  const [roundNumber, setRoundNumber] = useState(0);
 
   // using the custome fonts
   // return an of bolean that shows whether the icons hve loaded or not
@@ -44,13 +44,13 @@ export default function App() {
     setGameIsOver(false);
   }
 
-  function handleGameIsOver() {
+  function handleGameIsOver(numberOfRounds) {
     setGameIsOver(true);
+    setRoundNumber(numberOfRounds);
   }
 
   function handleStartGame() {
-    setGuessRound(0);
-    setGameIsOver(true);
+    setRoundNumber(0);
     setUserNumber(null);
   }
 
@@ -66,7 +66,7 @@ export default function App() {
     screen = (
       <GameOverScreen
         userNumber={userNumber}
-        roundNumber={guessRound}
+        roundNumber={roundNumber}
         onRestart={handleStartGame}
       />
     );
@@ -76,19 +76,22 @@ export default function App() {
     return null;
   }
   return (
-    <LinearGradient
-      colors={[Colors.primary800, Colors.secondary100]}
-      style={styles.rootScreen}
-    >
-      <ImageBackground
-        source={require("./assets/background.png")}
-        resizeMode="cover"
+    <>
+      <StatusBar style="light" />
+      <LinearGradient
+        colors={[Colors.primary800, Colors.secondary100]}
         style={styles.rootScreen}
-        imageStyle={styles.backgroundImage}
       >
-        <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+        <ImageBackground
+          source={require("./assets/background.png")}
+          resizeMode="cover"
+          style={styles.rootScreen}
+          imageStyle={styles.backgroundImage}
+        >
+          <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 
