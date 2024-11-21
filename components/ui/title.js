@@ -1,9 +1,26 @@
-import { View, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  useWindowDimensions,
+  Platform,
+} from "react-native";
 
 import Colors from "../../constants/colors";
 
 const Title = ({ children }) => {
-  return <Text style={styles.title}>{children}</Text>;
+  const { width, height } = useWindowDimensions();
+
+  let defaultFontSize = 26;
+
+  if (height < 400) {
+    defaultFontSize = 20;
+  }
+  return (
+    <Text style={[styles.title, { fontSize: defaultFontSize }]}>
+      {children}
+    </Text>
+  );
 };
 
 export default Title;
@@ -11,14 +28,15 @@ export default Title;
 const styles = StyleSheet.create({
   title: {
     fontFamily: "open-sans-bold",
-    fontSize: 24,
+    // fontSize: 26,
     // fontWeight: "bold",
     color: "#fff",
     textAlign: "center",
-    borderWidth: 2,
+    // borderWidth: Platform.OS === "android" ? 2 : 0,
+    borderWidth: Platform.select({ ios: 0, android: 2 }),
     borderColor: "#fff",
     padding: 10,
-    maxWidth: "80%",
+    maxwidth: "80%",
     width: 300,
   },
 });

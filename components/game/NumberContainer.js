@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 4,
     borderColor: Colors.secondary100,
-    padding: deviceWidth < 450 ? 12 : 24,
+    padding: deviceWidth < 350 ? 12 : 16,
     borderRadius: 8,
-    margin: deviceWidth < 350 ? 12 : 24,
+    margin: deviceWidth < 350 ? 12 : 20,
     justifyContent: "center",
     alignItems: "center",
   },
