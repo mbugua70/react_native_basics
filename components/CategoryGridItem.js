@@ -7,7 +7,7 @@ import {
   Platform,
 } from "react-native";
 
-const CategoryGridItem = ({ title, color }) => {
+const CategoryGridItem = ({ title, color, onNavigate }) => {
   return (
     <View style={styles.gridNavItem}>
       <Pressable
@@ -16,6 +16,7 @@ const CategoryGridItem = ({ title, color }) => {
           styles.buttonContainer,
           pressed ? styles.pressedButton : null,
         ]}
+        onPress={onNavigate}
       >
         <View style={[styles.innerGridContainer, { backgroundColor: color }]}>
           <Text style={styles.title}>{title}</Text>
