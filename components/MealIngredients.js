@@ -23,7 +23,11 @@ export default MealIngredients;
 const styles = StyleSheet.create({
   screen: {
     // flex: 1,
-    height: "76%",
+    top: 60,
+    position: "absolute",
+    zIndex: 1,
+    width: "100%",
+    height: "100%",
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
     padding: 20,
@@ -38,6 +42,7 @@ const styles = StyleSheet.create({
   textHeader: {
     color: "#fff",
     fontWeight: "600",
+    marginBottom: 20,
   },
 
   textDetail: {

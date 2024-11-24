@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import MiniDetails from "./MiniDetails";
 import MealIngredients from "./MealIngredients";
+import MealSteps from "./MealSteps";
 
 const MealDetails = ({ mealDetails }) => {
   console.log(mealDetails);
@@ -19,6 +20,7 @@ const MealDetails = ({ mealDetails }) => {
         {/* ingredients */}
         <MealIngredients ingredients={mealDetails.ingredients} />
         {/* steps */}
+        <MealSteps steps={mealDetails.steps} />
       </View>
     </>
   );
@@ -37,6 +39,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.75,
     shadowRadius: 8,
+    marginBottom: 120,
   },
   miniContainer: {
     flex: 1,

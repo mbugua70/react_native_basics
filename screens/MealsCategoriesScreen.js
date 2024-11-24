@@ -71,5 +71,6 @@ export default MealsCategoriesScreen;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    paddingVertical: 20,
   },
 });

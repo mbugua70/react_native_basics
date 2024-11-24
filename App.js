@@ -27,6 +27,7 @@ export default function App() {
             // the default setting for all the screens
             headerStyle: { backgroundColor: "#351401" },
             headerTintColor: "#fff",
+            headerBackButtonDisplayMode: "minimal",
           }}
         >
           <Stack.Screen
@@ -52,7 +53,24 @@ export default function App() {
             //   };
             // }}
           />
-          <Stack.Screen name="MealDetails" component={MealDetailsScreen} />
+          <Stack.Screen
+            name="MealDetails"
+            component={MealDetailsScreen}
+            // we can add a component to our page but you can only add it from here only if you won't need interaction with it
+            // options={{
+            //   headerRight: () => {
+            //     return <Text>Star</Text>;
+
+            //   },
+            // }}
+            options={{
+              headerStyle: {
+                backgroundColor: "none",
+              },
+              headerTintColor: "#351401",
+              headerShadowVisible: false,
+            }}
+          />
         </Stack.Navigator>
         {/* <CategoriesScreen /> */}
       </NavigationContainer>
