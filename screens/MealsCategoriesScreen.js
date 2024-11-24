@@ -14,9 +14,20 @@ const MealsCategoriesScreen = ({ route, navigation }) => {
     (mealDetail) => mealDetail.categoryIds.indexOf(categoryId) >= 0
   );
 
+  function handleMealDetailsNavigate(mealId) {
+    navigation.navigate("MealDetails", {
+      mealId: mealId,
+    });
+  }
+
   function renderMealItem(itemData) {
     return (
-      <MealItem title={itemData.item.title} imageUrl={itemData.item.imageUrl} />
+      <MealItem
+        title={itemData.item.title}
+        imageUrl={itemData.item.imageUrl}
+        mealId={itemData.item.id}
+        onNavigate={handleMealDetailsNavigate}
+      />
     );
   }
 

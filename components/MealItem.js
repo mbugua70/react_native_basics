@@ -1,12 +1,13 @@
 import { View, Text, Pressable, Image, StyleSheet } from "react-native";
 import PrimaryButton from "./PrimaryButton";
 
-const MealItem = ({ title, imageUrl }) => {
+const MealItem = ({ title, imageUrl, onNavigate, mealId }) => {
   return (
     <View style={styles.rootContainer}>
       <Pressable
         style={({ pressed }) => (pressed ? styles.pressed : null)}
         android_ripple={{ color: "black" }}
+        onPress={() => onNavigate(mealId)}
       >
         <View style={styles.detailContainer}>
           {/* rendering image using url we dont use require in source but we use instead uri */}
@@ -16,7 +17,7 @@ const MealItem = ({ title, imageUrl }) => {
           <View style={styles.detailsContainer}>
             <View style={styles.detailsContainerOne}>
               <Text style={[styles.textDetails, styles.textDetailsHeader]}>
-                Title
+                {title}
               </Text>
               <Text style={[styles.textDetails, styles.textPrice]}>
                 200 Kshs
