@@ -4,7 +4,7 @@ import MealIngredients from "./MealIngredients";
 import MealSteps from "./MealSteps";
 
 const MealDetails = ({ mealDetails }) => {
-  console.log(mealDetails);
+
   return (
     <>
       <View style={styles.screen}>

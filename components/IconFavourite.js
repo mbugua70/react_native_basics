@@ -2,6 +2,7 @@ import { View, Text, Pressable, StyleSheet } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const IconFavourite = ({ onPress, color, isPressed }) => {
+  console.log(isPressed);
   return (
     <View>
       <Pressable

@@ -1,22 +1,30 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import { MEALS } from "../data/dummy-data";
-import { useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 
 import MealDetails from "../components/MealDetails";
 import IconFavourite from "../components/IconFavourite";
+import { FavoritesContext } from "../store/context/favorite_context";
 
 const MealDetailsScreen = ({ route, navigation }) => {
-  const [isPressed, setIsPressed] = useState(false);
+  // const [isPressed, setIsPressed] = useState(false);
+  const favoriteMealContext = useContext(FavoritesContext);
   const { mealId } = route.params;
+
+  // finding out the favorite meal ids
+
+  const favoriteMealId = favoriteMealContext.id.includes(mealId);
 
   useLayoutEffect(() => {
     const mealTitle = MEALS.find((meal) => meal.id === mealId).title;
 
     function handleFavourite() {
-      setIsPressed((prev) => !prev);
-      console.log("clicked");
-      console.log(isPressed);
+      if (favoriteMealId) {
+        favoriteMealContext.removeFavorite(mealId);
+      } else {
+        favoriteMealContext.addFavorite(mealId);
+      }
     }
 
     navigation.setOptions({
@@ -25,13 +33,13 @@ const MealDetailsScreen = ({ route, navigation }) => {
           <IconFavourite
             color="#351401"
             onPress={handleFavourite}
-            isPressed={isPressed}
+            isPressed={favoriteMealId}
           />
         );
       },
       title: "Recipe",
     });
-  }, [navigation, mealId, isPressed]);
+  }, [navigation, mealId, favoriteMealId]);
 
   const mealDetails = MEALS.find((mealDetail) => mealDetail.id === mealId);
   const imageUrl = mealDetails.imageUrl;
