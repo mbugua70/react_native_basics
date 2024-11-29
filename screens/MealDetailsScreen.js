@@ -5,25 +5,32 @@ import { StatusBar } from "expo-status-bar";
 
 import MealDetails from "../components/MealDetails";
 import IconFavourite from "../components/IconFavourite";
-import { FavoritesContext } from "../store/context/favorite_context";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFavorite, addFavorite } from "../store/redux/store";
+// import { FavoritesContext } from "../store/context/favorite_context";
 
 const MealDetailsScreen = ({ route, navigation }) => {
   // const [isPressed, setIsPressed] = useState(false);
-  const favoriteMealContext = useContext(FavoritesContext);
+  // const favoriteMealContext = useContext(FavoritesContext);
+  const favoriteMealsId = useSelector((state) => state.favoriteMeals.ids);
+  const dispatch = useDispatch();
   const { mealId } = route.params;
 
   // finding out the favorite meal ids
 
-  const favoriteMealId = favoriteMealContext.id.includes(mealId);
+  // const favoriteMealId = favoriteMealContext.id.includes(mealId);
+  const favoriteMealId = favoriteMealsId.includes(mealId);
 
   useLayoutEffect(() => {
     const mealTitle = MEALS.find((meal) => meal.id === mealId).title;
 
     function handleFavourite() {
       if (favoriteMealId) {
-        favoriteMealContext.removeFavorite(mealId);
+        // favoriteMealContext.removeFavorite(mealId);
+        dispatch(removeFavorite({ id: mealId }));
       } else {
-        favoriteMealContext.addFavorite(mealId);
+        // favoriteMealContext.addFavorite(mealId);
+        dispatch(addFavorite({ id: mealId }));
       }
     }
 

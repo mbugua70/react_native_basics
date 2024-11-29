@@ -2,19 +2,23 @@ import { useContext } from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 
 import { MEALS } from "../data/dummy-data";
-import { FavoritesContext } from "../store/context/favorite_context";
+// import { FavoritesContext } from "../store/context/favorite_context";
 import MealItem from "../components/MealItem";
+import { useSelector } from "react-redux";
 
 const FavoriteScreen = ({ navigation, route }) => {
-  const favoriteMealContext = useContext(FavoritesContext);
-  console.log(favoriteMealContext.id);
+  // const favoriteMealContext = useContext(FavoritesContext);
+  const favoriteMealsIds = useSelector((state) => state.favoriteMeals.ids);
+  // console.log(favoriteMealContext.id);
   const mealsShown = MEALS.filter((mealdetail) =>
-    favoriteMealContext.id.includes(mealdetail.id)
+    // favoriteMealContext.id.includes(mealdetail.id)
+    favoriteMealsIds.includes(mealdetail.id)
   );
 
   let content = "";
 
-  if (favoriteMealContext.id.length === 0) {
+  // if (favoriteMealContext.id.length === 0) {
+  if (favoriteMealsIds.length === 0) {
     content = (
       <View style={styles.rootScreen}>
         <Image source={require("../assets/folder.png")} style={styles.image} />

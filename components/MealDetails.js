@@ -4,7 +4,6 @@ import MealIngredients from "./MealIngredients";
 import MealSteps from "./MealSteps";
 
 const MealDetails = ({ mealDetails }) => {
-
   return (
     <>
       <View style={styles.screen}>
@@ -31,6 +30,7 @@ export default MealDetails;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    // height: "100%",
     borderWidth: 1,
     borderColor: "gray",
     borderRadius: 30,
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.75,
     shadowRadius: 8,
-    marginBottom: 120,
   },
   miniContainer: {
     flex: 1,
